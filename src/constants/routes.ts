@@ -1,2 +1,7 @@
-const routes: any = []
-export default routes
+export const LANDING = "/"
+export const SIGNUP = "/signup"
+export const SIGNIN = "/signin"
+export const HOME = "/home"
+export const ACCOUNT = "/account"
+export const ADMIN = "/admin"
+export const FORGOTPASS = "/forgot-password"
