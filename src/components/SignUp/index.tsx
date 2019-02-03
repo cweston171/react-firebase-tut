@@ -1,11 +1,12 @@
 import * as React from 'react'
-import { Link } from 'react-router-dom'
-import { Alert, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
-
-import { withFirebase } from '../Firebase'
-import * as ROUTES from '../../constants/routes'
 import { compose } from 'recompose'
 import { withRouter } from 'react-router-dom'
+import { withFirebase } from '../Firebase'
+import * as ROUTES from '../../constants/routes'
+
+import { Link } from 'react-router-dom'
+import { SignInLink } from '../SignIn'
+import { Alert, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap'
 
 interface Props {
     firebase: any
@@ -73,13 +74,13 @@ class SignUpFormBase extends React.Component<Props, State> {
         state[name] = value
 
         this.setState(
-            (prevState: any) => state,
+            () => state,
             () => { this.completeForm() }
         )
     }
 
     handleCancel = () => {
-        this.setState((prevState: State) => ({ ...this.initialState }))
+        this.setState(this.initialState)
     }
 
     handleSubmit = (event: any) => {
@@ -100,7 +101,6 @@ class SignUpFormBase extends React.Component<Props, State> {
                     this.setState((prevState) => ({ error: error.message }))
                 }
             )
-        event.preventDefault();
     }
 
     render () {
@@ -112,94 +112,92 @@ class SignUpFormBase extends React.Component<Props, State> {
             error,
             formComplete
         } = this.state
-        
+
         const errorMsg = error && <Alert color="danger">{error}</Alert>
 
         return (
-            <div>
-                <Form>
-                    <FormGroup row>
-                        <Label for="username" sm={2}>Username:</Label>
-                        <Col sm={10}>
-                            <Input
-                                type="text"
-                                name="username"
-                                value={username}
-                                onChange={
-                                    (e: any) => {
-                                        this.handleInputChange(e.target.name, e.target.value)
-                                    }
+            <Form>
+                <FormGroup row>
+                    <Label for="username" sm={2}>Username:</Label>
+                    <Col sm={10}>
+                        <Input
+                            type="text"
+                            name="username"
+                            value={username}
+                            onChange={
+                                (e: any) => {
+                                    this.handleInputChange(e.target.name, e.target.value)
                                 }
-                                placeholder="Full Name"
-                            />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="email" sm={2}>Email</Label>
-                        <Col sm={10}>
-                            <Input
-                                type="text"
-                                name="email"
-                                value={email}
-                                onChange={
-                                    (e: any) => {
-                                        this.handleInputChange(e.target.name, e.target.value)
-                                    }
+                            }
+                            placeholder="Full Name"
+                        />
+                    </Col>
+                </FormGroup>
+                <FormGroup row>
+                    <Label for="email" sm={2}>Email</Label>
+                    <Col sm={10}>
+                        <Input
+                            type="text"
+                            name="email"
+                            value={email}
+                            onChange={
+                                (e: any) => {
+                                    this.handleInputChange(e.target.name, e.target.value)
                                 }
-                                placeholder="Email Address"
-                            />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="passwordOne" sm={2}>Password</Label>
-                        <Col sm={10}>
-                            <Input
-                                type="password"
-                                name="passwordOne"
-                                value={passwordOne}
-                                onChange={
-                                    (e: any) => {
-                                        this.handleInputChange(e.target.name, e.target.value)
-                                    }
+                            }
+                            placeholder="Email Address"
+                        />
+                    </Col>
+                </FormGroup>
+                <FormGroup row>
+                    <Label for="passwordOne" sm={2}>Password</Label>
+                    <Col sm={10}>
+                        <Input
+                            type="password"
+                            name="passwordOne"
+                            value={passwordOne}
+                            onChange={
+                                (e: any) => {
+                                    this.handleInputChange(e.target.name, e.target.value)
                                 }
-                                placeholder="Password"
-                            />
-                        </Col>
-                    </FormGroup>
-                    <FormGroup row>
-                        <Label for="passwordTwo" sm={2}>Confirm Password</Label>
-                        <Col sm={10}>
-                            <Input
-                                type="password"
-                                name="passwordTwo"
-                                value={passwordTwo}
-                                onChange={
-                                    (e: any) => {
-                                        this.handleInputChange(e.target.name, e.target.value)
-                                    }
+                            }
+                            placeholder="Password"
+                        />
+                    </Col>
+                </FormGroup>
+                <FormGroup row>
+                    <Label for="passwordTwo" sm={2}>Confirm Password</Label>
+                    <Col sm={10}>
+                        <Input
+                            type="password"
+                            name="passwordTwo"
+                            value={passwordTwo}
+                            onChange={
+                                (e: any) => {
+                                    this.handleInputChange(e.target.name, e.target.value)
                                 }
-                                placeholder="Confirm Password"
-                            />
-                        </Col>
-                    </FormGroup>
-                    <div>
-                        <Button
-                            color="primary"
-                            disabled={!formComplete}
-                            onClick={this.handleSubmit}
-                        >
-                            Sign Up
-                        </Button>
-                        <Button
-                            color="link"
-                            onClick={this.handleCancel}
-                        >
-                            Cancel
-                        </Button>
-                    </div>
-                    {errorMsg}
-                </Form>
-            </div>
+                            }
+                            placeholder="Confirm Password"
+                        />
+                    </Col>
+                </FormGroup>
+                <div>
+                    <Button
+                        color="primary"
+                        disabled={!formComplete}
+                        onClick={this.handleSubmit}
+                    >
+                        Sign Up
+                    </Button>
+                    <Button
+                        color="link"
+                        onClick={this.handleCancel}
+                    >
+                        Cancel
+                    </Button>
+                </div>
+                {errorMsg}
+            </Form>
         )
     }
 }
@@ -207,8 +205,9 @@ class SignUpFormBase extends React.Component<Props, State> {
 const SignUpPage = () => (
     <div>
         <h1>Register to use this awesome app!</h1>
-        <hr/>
         <SignUpForm />
+        <hr/>
+        <SignInLink />
     </div>
 )
 
